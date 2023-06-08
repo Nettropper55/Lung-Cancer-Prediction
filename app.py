@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LogisticRegression
+
 
 # Load the dataset
 data = pd.read_csv('cancer patient data sets.csv')
@@ -19,18 +21,20 @@ def main():
     st.title('Prediksi Resiko Kanker Paru-Paru')
 
     # Sidebar inputs
-    st.sidebar.header('User Inputs')
-    age = st.sidebar.number_input('Age', min_value=1, max_value=100, value=50)
-    gender = st.sidebar.selectbox('Gender', ['Male', 'Female'])
-    air_pollution = st.sidebar.number_input('Air Pollution', min_value=1, max_value=10, value=5)
-    genetic_risk = st.sidebar.number_input('Genetic Risk', min_value=1, max_value=10, value=5)
-    chronic_lung_disease = st.sidebar.number_input('Chronic Lung Disease', min_value=1, max_value=10, value=1)
-    smoking = st.sidebar.number_input('Smoking', min_value=1, max_value=10, value=1)
-    passive_smoker = st.sidebar.number_input('Passive Smoker', min_value=1, max_value=10, value=1)
-    shortness_of_breath = st.sidebar.number_input('Shortness of Breath', min_value=1, max_value=10, value=1)
+    st.sidebar.header('Data Inputan')
+    age = st.sidebar.number_input('Umur', min_value=1, max_value=100, value=33)
+    gender = st.sidebar.selectbox('Jenis Kelamin', ['Laki-Laki', 'Perempuan'])
+    air_pollution = st.sidebar.number_input('Polusi Udara', min_value=1, max_value=10, value=2)
+    genetic_risk = st.sidebar.number_input('Resiko Genetika', min_value=1, max_value=10, value=3)
+    chronic_lung_disease = st.sidebar.number_input('Penyakit Kronis Paru-Paru', min_value=1, max_value=10, value=2)
+    smoking = st.sidebar.number_input('Perokok Aktif', min_value=1, max_value=10, value=3)
+    passive_smoker = st.sidebar.number_input('Perokok Pasif', min_value=1, max_value=10, value=2)
+    shortness_of_breath = st.sidebar.number_input('Sesak Nafas', min_value=1, max_value=10, value=2)
 
     # Submit button
-    submitted = st.sidebar.button('Submit')
+    submitted = st.sidebar.button('Prediksi')
+
+    
 
     if submitted:
         # Convert gender input to numeric value

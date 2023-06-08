@@ -11,15 +11,14 @@ import seaborn as sns
 # For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
 
 import os
-for dirname, _, filenames in os.walk('E:\Kuliah\Semester 4\AI\Lung Cancer\cancer patient data sets.csv'):
+for dirname, _, filenames in os.walk('/kaggle/input'):
     for filename in filenames:
         print(os.path.join(dirname, filename))
 
 # You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
 # You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
-data = pd.read_csv('E:\Kuliah\Semester 4\AI\Lung Cancer\cancer patient data sets.csv')
+data = pd.read_csv('/kaggle/input/cancer-patients-and-air-pollution-a-new-link/cancer patient data sets.csv')
 data
-
 selected_columns = ['Age', 'Gender', 'Air Pollution', 'Genetic Risk', 'chronic Lung Disease',
                     'Smoking', 'Passive Smoker', 'Shortness of Breath', 'Level']
 selected_data = data.loc[:, selected_columns]
@@ -42,3 +41,43 @@ from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
+
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression()  ## 建立模型
+lr.fit(X_train, y_train)
+
+y_pred = lr.predict(X_test)  ## 使用模型來預測
+
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+'''
+               預測類別1     預測類別2     預測類別3
+實際類別1       TP           FN           FN
+實際類別2       FP           TN           FN
+實際類別3       FP           FP           TN
+
+'''
+print('accuracy rate =', accuracy_score(y_test, y_pred))
+
+# input
+age = 40
+gender = 1
+air_pollution = 4
+genetic_risk = 3
+chronic_lung_disease = 2
+smoking = 7
+passive_smoker = 7
+shortness_of_breath = 2
+
+# predict
+input_data = np.array([[age, gender, air_pollution, genetic_risk, chronic_lung_disease, smoking, passive_smoker, shortness_of_breath]])
+prediction = lr.predict(input_data)
+
+print("Level of rate to have lung cancer:", end=' ')
+if prediction == 0:
+    print('Low')
+elif prediction == 1:
+    print('Medium')
+else:
+    print('High')
